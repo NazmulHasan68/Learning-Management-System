@@ -1,8 +1,14 @@
 import express from 'express'
 import cors from 'cors'
-const app = express()
+import dotenv from 'dotenv'
+import { connectDB } from './Database/dbConnect.js'
+dotenv.config()
 
-app.listen(4000 , (req, res)=>{
-    console.log("server is running");
-    
+const app = express()
+const PORT = 8080 
+
+
+app.listen(PORT , (req, res)=>{
+    console.log(`server is running ${PORT}`);
+    connectDB()
 })
