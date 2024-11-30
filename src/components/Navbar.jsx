@@ -5,6 +5,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuPortal, DropdownMenuSeparator, DropdownMenuShortcut, DropdownMenuSub, DropdownMenuSubContent, DropdownMenuSubTrigger, DropdownMenuTrigger } from './ui/dropdown-menu'
 import DarkMode from '@/DarkMode'
 import { Sheet, SheetClose, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from './ui/sheet'
+import { Link } from 'react-router-dom'
 
 export default function Navbar() {
     const user = true
@@ -31,8 +32,8 @@ export default function Navbar() {
                     <DropdownMenuLabel>My Account</DropdownMenuLabel>
                         <DropdownMenuSeparator />
                     <DropdownMenuGroup>
-                        <DropdownMenuItem> My learning </DropdownMenuItem>
-                        <DropdownMenuItem>Edit Profile</DropdownMenuItem>
+                        <DropdownMenuItem ><Link to='/my-learning'>My learning</Link></DropdownMenuItem>
+                        <DropdownMenuItem><Link to='/profile'>Edit Profile</Link></DropdownMenuItem>
                         <DropdownMenuItem>Log out</DropdownMenuItem>
                     </DropdownMenuGroup>
                     <DropdownMenuSeparator />
