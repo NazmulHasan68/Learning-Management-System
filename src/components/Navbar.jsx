@@ -7,7 +7,7 @@ import DarkMode from '@/DarkMode'
 import { Sheet, SheetClose, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from './ui/sheet'
 
 export default function Navbar() {
-    const user = false
+    const user = true
   return (
     <div className='h-16 dark:bg-[#0A0A0A] bg-white border-b dark:border-b-gray-800 border-b-gray-200 fixed top-0 right-0 left-0 duration-300 z-10'>
       {/* Desktop */}
@@ -27,7 +27,7 @@ export default function Navbar() {
                     <AvatarFallback>CN</AvatarFallback>
                 </Avatar>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-56">
+                <DropdownMenuContent className="w-56 bg-white">
                     <DropdownMenuLabel>My Account</DropdownMenuLabel>
                         <DropdownMenuSeparator />
                     <DropdownMenuGroup>
@@ -82,7 +82,7 @@ const MobileNavbar = () =>{
                     role === 'instructor' && (
                         <SheetFooter >
                             <SheetClose asChild>
-                                <Button className='bg-slate-700 text-white hover:bg-slate-600' type='submit'>Save Changes</Button>
+                                <Button className='bg-slate-700 text-white hover:bg-slate-600' type='submit'>Dashboard</Button>
                             </SheetClose>
                         </SheetFooter>
                     )
