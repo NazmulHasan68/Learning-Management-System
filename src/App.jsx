@@ -4,6 +4,7 @@ import Navbar from './components/Navbar'
 import { Login } from './pages/Login'
 import HeroSection from './pages/student/HeroSection'
 import MainLayout from './Layout/MainLayout'
+import Courses from './pages/student/Courses'
 
 
 const appRoutr = createBrowserRouter([
@@ -16,7 +17,8 @@ const appRoutr = createBrowserRouter([
         element:(
         <>
           <HeroSection/>
-          {/* Coursers */}
+          <Courses/>
+
         </>
         )
       },
