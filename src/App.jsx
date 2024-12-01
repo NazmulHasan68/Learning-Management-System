@@ -7,6 +7,10 @@ import MainLayout from './Layout/MainLayout'
 import Courses from './pages/student/Courses'
 import Mylearning from './pages/student/Mylearning'
 import Profile from './pages/student/Profile'
+import Sidebar from './pages/admin/lecture/Sidebar'
+import Dashboard from './pages/admin/Dashboard'
+import CourseTable from './pages/admin/course/CourseTable'
+import AddCourse from './pages/admin/lecture/AddCourse'
 
 
 const appRoutr = createBrowserRouter([
@@ -36,7 +40,27 @@ const appRoutr = createBrowserRouter([
         path:"/profile",
         element:<Profile/>
       },
-    ]
+
+      // admin route start form here
+      {
+        path : "/admin",
+        element : <Sidebar/>,
+        children:[
+          {
+            path : "dashboard",
+            element : <Dashboard/>
+          },
+          {
+            path : "course",
+            element : <CourseTable/>
+          },
+          {
+            path : "course/create",
+            element : <AddCourse/>
+          },
+        ]
+      }
+    ],
   }
 ])
 
