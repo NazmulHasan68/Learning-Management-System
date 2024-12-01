@@ -1,6 +1,8 @@
 import { Button } from '@/components/ui/button'
 import { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-import React from 'react'
+import { useGetCreatorCourseQuery } from '@/features/api/courseApi'
+import { Edit } from 'lucide-react'
+import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 const invoices = [
@@ -49,14 +51,21 @@ const invoices = [
   ]
 
 export default function CourseTable() {
-    const navigate = useNavigate()
+    const navigate = useNavigate();
+    const { data, isLoading, error } = useGetCreatorCourseQuery();
+    
+    if (isLoading) return <h1>Loading...</h1>;
+    if (error) return <h1>Error: {error.message}</h1>;
+    console.log(data);
+    
+ 
   return (
     <div>
       <Button onClick={()=>navigate(`create`)} className="px-4  rounded-xl bg-slate-800 hover:bg-slate-950 text-white m-2">
         Create a new Course
       </Button>
       <Table>
-        <TableCaption>A list of your recent invoices.</TableCaption>
+        <TableCaption>A list of your recent Courses.</TableCaption>
         <TableHeader>
             <TableRow>
             <TableHead className="w-[100px]">Peice</TableHead>
@@ -66,21 +75,17 @@ export default function CourseTable() {
             </TableRow>
         </TableHeader>
         <TableBody>
-            {invoices.map((invoice) => (
-            <TableRow key={invoice.invoice}>
-                <TableCell className="font-medium">{invoice.invoice}</TableCell>
-                <TableCell>{invoice.paymentStatus}</TableCell>
-                <TableCell>{invoice.paymentMethod}</TableCell>
-                <TableCell className="text-right">{invoice.totalAmount}</TableCell>
+            {data?.courses?.map((courese, index) => (
+            <TableRow key={index} className="hover:bg-slate-100 cursor-pointer">
+                <TableCell className="font-medium">{courese?.coursePrice || "NA"}</TableCell>
+                <TableCell> <div>{courese?.isPublished ? "Publiched" : "Draft"}</div></TableCell>
+                <TableCell>{courese.courseTitle}</TableCell>
+                <TableCell className="text-right">
+                    <Button className='bg-slate-700 hover:bg-slate-800 text-white'><Edit  size='sm'/></Button>
+                </TableCell>
             </TableRow>
             ))}
         </TableBody>
-        <TableFooter>
-            <TableRow>
-            <TableCell colSpan={3}>Total</TableCell>
-            <TableCell className="text-right">$2,500.00</TableCell>
-            </TableRow>
-        </TableFooter>
         </Table>
     </div>
   )
