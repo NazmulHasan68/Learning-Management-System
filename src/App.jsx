@@ -8,9 +8,10 @@ import Courses from './pages/student/Courses'
 import Mylearning from './pages/student/Mylearning'
 import Profile from './pages/student/Profile'
 import Sidebar from './pages/admin/lecture/Sidebar'
-import Dashboard from './pages/admin/Dashboard'
+import Dashboard from './pages/admin/lecture/Dashboard'
 import CourseTable from './pages/admin/course/CourseTable'
-import AddCourse from './pages/admin/lecture/AddCourse'
+import AddCourse from './pages/admin/course/AddCourse'
+import EditCourse from './pages/admin/course/EditCourse'
 
 
 const appRoutr = createBrowserRouter([
@@ -57,6 +58,10 @@ const appRoutr = createBrowserRouter([
           {
             path : "course/create",
             element : <AddCourse/>
+          },
+          {
+            path : "course/:courseId",
+            element : <EditCourse/>
           },
         ]
       }

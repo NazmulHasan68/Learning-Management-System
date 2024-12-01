@@ -81,7 +81,9 @@ export default function CourseTable() {
                 <TableCell> <div>{courese?.isPublished ? "Publiched" : "Draft"}</div></TableCell>
                 <TableCell>{courese.courseTitle}</TableCell>
                 <TableCell className="text-right">
-                    <Button className='bg-slate-700 hover:bg-slate-800 text-white'><Edit  size='sm'/></Button>
+                    <Button onClick={()=>navigate(`/admin/course/${courese?._id}`)} className='bg-slate-700 hover:bg-slate-800 text-white'>
+                      <Edit  size='sm'/>
+                    </Button>
                 </TableCell>
             </TableRow>
             ))}
