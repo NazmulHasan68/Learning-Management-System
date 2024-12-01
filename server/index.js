@@ -3,6 +3,7 @@ import cors from 'cors'
 import dotenv from 'dotenv'
 import { connectDB } from './Database/dbConnect.js'
 import userRoute from './routes/user.Route.js'
+import courseRoute from './routes/course.Route.js'
 import cookieParser from 'cookie-parser'
 dotenv.config()
 
@@ -17,6 +18,7 @@ app.use(cors({
     credentials:true
 }))
 app.use("/api/v1/user", userRoute)
+app.use("/api/v1/course",courseRoute)
 
 app.get('/home', (req, res) => {
     res.status(200).json({ success: true, message: "Hello, I am coming from the backend" });
