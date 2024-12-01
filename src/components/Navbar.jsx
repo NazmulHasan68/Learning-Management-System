@@ -34,7 +34,7 @@ export default function Navbar() {
       <div className=' mx-auto max-w-7xl hidden md:flex justify-between items-center gap-10 h-full'>
         <div className='flex items-center gap-2'>
             <School size={"30"}/>
-            <h1 className='hidden md:block font-extrabold text-2xl'>E-Learning</h1>
+            <h1 className='hidden md:block font-extrabold text-2xl'><Link to={'/'}>E-Learning</Link></h1>
         </div>
          {/* user icons and dark mode icons */}
         <div className='flex items-center gap-5'>
