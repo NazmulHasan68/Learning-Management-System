@@ -12,8 +12,6 @@ cloudinary.config({
 
 
 export const uploadMedia = async (file) => {
-  console.log(file, "Uploading file to Cloudinary");
-
   try {
     const uploadResponse = await cloudinary.uploader.upload(file, {
       folder: 'user_profile',
