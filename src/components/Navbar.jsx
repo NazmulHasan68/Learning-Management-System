@@ -1,13 +1,28 @@
 import { Menu, School } from 'lucide-react'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Button } from './ui/button'
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuPortal, DropdownMenuSeparator, DropdownMenuShortcut, DropdownMenuSub, DropdownMenuSubContent, DropdownMenuSubTrigger, DropdownMenuTrigger } from './ui/dropdown-menu'
 import DarkMode from '@/DarkMode'
 import { Sheet, SheetClose, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from './ui/sheet'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { useLogoutUserMutation } from '@/features/api/authApi'
+import { toast } from 'sonner'
 
 export default function Navbar() {
+    const [logoutUser , {data, isSuccess}] = useLogoutUserMutation()
+    const navigate = useNavigate()
+
+    useEffect(()=>{
+        if(isSuccess){
+            toast.success(data.message || "User logout")
+            navigate('/login')
+        }
+    },[isSuccess])
+
+    const logoutHandler = async() =>{
+        await logoutUser()
+    }
     const user = true
   return (
     <div className='h-16 dark:bg-[#0A0A0A] bg-white border-b dark:border-b-gray-800 border-b-gray-200 fixed top-0 right-0 left-0 duration-300 z-10'>
@@ -34,7 +49,7 @@ export default function Navbar() {
                     <DropdownMenuGroup>
                         <DropdownMenuItem ><Link to='/my-learning'>My learning</Link></DropdownMenuItem>
                         <DropdownMenuItem><Link to='/profile'>Edit Profile</Link></DropdownMenuItem>
-                        <DropdownMenuItem>Log out</DropdownMenuItem>
+                        <DropdownMenuItem onClick={logoutHandler}>Log out</DropdownMenuItem>
                     </DropdownMenuGroup>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem>Dashboard</DropdownMenuItem>
