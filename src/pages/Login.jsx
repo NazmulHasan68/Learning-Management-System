@@ -73,10 +73,10 @@ export const Login = () => {
       navigate('/')
     }
     if(registerError ){
-      toast.error(registerData.data.message || "Sign up Failed!")
+      toast.error(registerError.data.message || "Sign up Failed!")
     }
     if(logginError ){
-      toast.error(loginData.data.message || "faild Failed!")
+      toast.error(logginError.data.message|| "faild Failed!")
     }
   }, [
     logginIsloading,

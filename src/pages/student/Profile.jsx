@@ -58,6 +58,10 @@ export default function Profile() {
     }
   };
 
+  useEffect(()=>{
+    refetch()
+  },[])
+
   useEffect(() => {
     if (isSuccess) {
       toast.success(updateUserData?.message || "Profile updated successfully");
@@ -82,7 +86,7 @@ export default function Profile() {
         <div className="flex flex-col items-center">
           <Avatar className="cursor-pointer w-24 h-24 md:h-32 md:w-32">
             <AvatarImage
-              src={user.photourl || "https://github.com/shadcn.png"}
+              src={user?.photourl || "https://github.com/shadcn.png"}
             />
             <AvatarFallback>CN</AvatarFallback>
           </Avatar>
@@ -93,14 +97,14 @@ export default function Profile() {
               Name :
               <span className="font-normal text-gray-700 dark:text-gray-300">
                 {" "}
-                {user.name}
+                {user?.name}
               </span>
             </h1>
             <h1 className="font-semibold text-gray-900 dark:text-gray-100">
               Email :
               <span className="font-normal text-gray-700 dark:text-gray-300 py-2">
                 {" "}
-                {user.email}
+                {user?.email}
               </span>
             </h1>
             <h1 className="font-semibold text-gray-900 dark:text-gray-100">
@@ -112,7 +116,7 @@ export default function Profile() {
             </h1>
           </div>
           <Dialog>
-            <DialogTrigger className="bg-blue-500 px-4 py-1 rounded-full mt-5 hover:bg-blue-600 text-white">
+            <DialogTrigger className="bg-blue-500 px-4 py-1 rounded-full mt-2 hover:bg-blue-600 text-white">
               Edit Profile
             </DialogTrigger>
             <DialogContent className="bg-white">
