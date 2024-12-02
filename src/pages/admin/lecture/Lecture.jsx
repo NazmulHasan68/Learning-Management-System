@@ -14,6 +14,7 @@ function Lecture({ lecture, index, courseId }) {
         {lecture.lectureTitle}
       </h1>
       <Edit
+        courseId={courseId}
         onClick={goToUpdateLecture}
         className=" cursor-pointer text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400"
       />
