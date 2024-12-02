@@ -14,13 +14,18 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useEditCourseMutation } from "@/features/api/courseApi";
 import { Loader2 } from "lucide-react";
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { toast } from "sonner";
 
 export default function CourseTab() {
   const [previewThumbnail, setPreviewThumbnail] = useState("");
+  const params = useParams()
+  const courseId = params.courseId
   const navigate = useNavigate();
+  const [editCourse , {data, isLoading, isSuccess, error}] = useEditCourseMutation()
   const [input, setinput] = useState({
     courseTitle: "",
     subTitle: "",
@@ -54,13 +59,29 @@ export default function CourseTab() {
     }
   };
 
-  const isLoading = false;
   const isPublished = true;
 
-  const handleSubmit = () => {
-    // Add save or publish logic here
-    console.log("Saving Course:", input);
+  const handleSubmit = async() => {
+    const formData = new FormData();
+    formData.append("courseTitile", input.courseTitle)
+    formData.append("subTitle", input.subTitle)
+    formData.append("description", input.description)
+    formData.append("category", input.category)
+    formData.append("courseLevel", input.courseLevel)
+    formData.append("coursePrice", input.coursePrice)
+    formData.append("courseThumbnail", input.courseThumbnail)
+
+    await editCourse({formData, courseId})
   };
+
+  useEffect(()=>{
+    if(isSuccess){
+        toast.success(data.message || "Course updated.")
+    }
+    if(error){
+        toast.error(error.data.message || "Failed to updated course!")
+    }
+  },[])
 
   return (
     <Card className="p-5">
