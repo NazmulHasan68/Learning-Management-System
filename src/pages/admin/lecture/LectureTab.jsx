@@ -10,8 +10,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Progress } from "@/components/ui/progress";
 import { Switch } from "@/components/ui/switch";
-import { useEditeLectureMutation, useRemoveLectureMutation } from "@/features/api/courseApi";
+import { useEditeLectureMutation, useGetLectureByIdQuery, useRemoveLectureMutation } from "@/features/api/courseApi";
 import axios from "axios";
+import { Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
@@ -98,6 +99,18 @@ export default function LectureTab() {
       navigate(`/admin/course/${courseId}/lecture`)
     }
   }, [removeSuccess]);
+
+
+  const {data:LectureData} = useGetLectureByIdQuery(lectureId)
+  const lecture = LectureData?.lecture
+
+  useEffect(()=>{
+    if(lecture){
+      setLectureTitle(lecture.lectureTitle)
+      setFree(lecture.isPreviewFree)
+      setUploadvideoInfo(lecture.vidoeUrl)
+    }
+  },[lecture])
   
   return (
     <Card>
@@ -109,10 +122,14 @@ export default function LectureTab() {
         <div className="flex items-center gap-2">
           <Button
             variant="destructive"
+            disabled={removeLoading}
             onClick={RemoveLectureHandler}
             className="bg-red-600 hover:bg-red-700 text-white rounded-xl"
           >
-            Remove Lecture
+            {
+              removeLoading ? <><Loader2 className="mr-2 h-4 w-4 animate-spin"/> Please wait</> : "Remove Lecture"
+            }
+            
           </Button>
         </div>
       </CardHeader>
@@ -157,7 +174,7 @@ export default function LectureTab() {
           <Button
             onClick={editLectureHandler}
             className="bg-slate-800 hover:bg-slate-900 text-white rounded"
-            disabled={btnDisable || isLoading}
+            disabled={ isLoading}
           >
             {isLoading ? "Updating..." : "Update Lecture"}
           </Button>
