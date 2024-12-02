@@ -10,4 +10,4 @@ const lectureSchema = new mongoose.Schema({
     isPreviwFree:{type : Boolean}
 },{timestamps:true})
 
-export const Lecture = mongoose.model("Leacture", lectureSchema)
+export const Lecture = mongoose.model("Lecture", lectureSchema)
