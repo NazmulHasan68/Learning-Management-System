@@ -1,10 +1,6 @@
 import { RichTextEditor } from "@/components/RichTextEditor";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardDescription,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardDescription, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
@@ -14,7 +10,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useEditCourseMutation, useGetCourseByIdQuery } from "@/features/api/courseApi";
+import {
+  useEditCourseMutation,
+  useGetCourseByIdQuery,
+} from "@/features/api/courseApi";
 import { Loader2 } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
@@ -22,12 +21,16 @@ import { toast } from "sonner";
 
 export default function CourseTab() {
   const [previewThumbnail, setPreviewThumbnail] = useState("");
-  const params = useParams()
-  const courseId = params.courseId
+  const params = useParams();
+  const courseId = params.courseId;
   const navigate = useNavigate();
-  const [editCourse , {data, isLoading, isSuccess, error}] = useEditCourseMutation()
-  const {data:courseByIdData, isLoading:courseByIdLoading} = useGetCourseByIdQuery(courseId)
-  const [input, setinput] = useState({
+
+  const [editCourse, { data, isLoading, isSuccess, error }] =
+    useEditCourseMutation();
+  const { data: courseByIdData, isLoading: courseByIdLoading } =
+    useGetCourseByIdQuery(courseId);
+
+  const [input, setInput] = useState({
     courseTitle: "",
     subTitle: "",
     description: "",
@@ -35,70 +38,103 @@ export default function CourseTab() {
     courseLevel: "",
     coursePrice: "",
     courseThumbnail: "",
+    isPublished: false,
   });
 
-  const course = courseByIdData?.course
+  useEffect(() => {
+    if (courseByIdData?.course) {
+      const course = courseByIdData.course;
+      setInput({
+        courseTitle: course?.courseTitle || "",
+        subTitle: course?.subTitle || "",
+        description: course?.description || "",
+        category: course?.category || "",
+        courseLevel: course?.courseLevel || "",
+        coursePrice: course?.coursePrice || "",
+        courseThumbnail: course?.courseThumbnail || "",
+        isPublished: course?.isPublished || false,
+      });
 
-  useEffect(()=>{
-    if(course){
-        setinput({
-            courseTitle: course.courseTitle,
-            subTitle: course.subTitle,
-            description: course.description,
-            category: course.category,
-            courseLevel: course.courseLevel,
-            coursePrice: course.coursePrice,
-            courseThumbnail: '',
-        })
+      if (course?.courseThumbnail) {
+        setPreviewThumbnail(course.courseThumbnail);
+      }
     }
-  },[course])
+  }, [courseByIdData]);
 
-  const changeEventHandler = (e) => {
+  const handleChange = (e) => {
     const { name, value } = e.target;
-    setinput({ ...input, [name]: value });
+    setInput({ ...input, [name]: value });
   };
 
-  const SelectedCategory = (value) => {
-    setinput((prev) => ({ ...prev, category: value }));
+  const handleCategoryChange = (value) => {
+    setInput((prev) => ({ ...prev, category: value }));
   };
 
-  const seletectCourseLevel = (value) => {
-    setinput((prev) => ({ ...prev, courseLevel: value }));
+  const handleLevelChange = (value) => {
+    setInput((prev) => ({ ...prev, courseLevel: value }));
   };
 
-  const selectThumbnail = (e) => {
+  const handleThumbnailChange = (e) => {
     const file = e.target.files?.[0];
     if (file) {
-      setinput((prev) => ({ ...prev, courseThumbnail: file }));
+      if (file.size > 2 * 1024 * 1024) {
+        toast.error("File size must be under 2MB.");
+        return;
+      }
+      if (!["image/jpeg", "image/png"].includes(file.type)) {
+        toast.error("Only JPEG and PNG formats are allowed.");
+        return;
+      }
+
+      setInput((prev) => ({ ...prev, courseThumbnail: file }));
       const fileReader = new FileReader();
       fileReader.onloadend = () => setPreviewThumbnail(fileReader.result);
       fileReader.readAsDataURL(file);
     }
   };
 
-  const isPublished = true;
+  const handleSubmit = async () => {
+    if (!input.courseTitle || !input.description || !input.category) {
+      toast.error("Please fill in all required fields.");
+      return;
+    }
 
-  const handleSubmit = async() => {
     const formData = new FormData();
-    formData.append("courseTitile", input.courseTitle)
-    formData.append("subTitle", input.subTitle)
-    formData.append("description", input.description)
-    formData.append("category", input.category)
-    formData.append("courseLevel", input.courseLevel)
-    formData.append("coursePrice", input.coursePrice)
-    formData.append("courseThumbnail", input.courseThumbnail)
+    formData.append("courseTitle", input.courseTitle);
+    formData.append("subTitle", input.subTitle);
+    formData.append("description", input.description);
+    formData.append("category", input.category);
+    formData.append("courseLevel", input.courseLevel);
+    formData.append("coursePrice", input.coursePrice);
 
-    await editCourse({formData, courseId})
+    if (input.courseThumbnail) {
+      formData.append("courseThumbnail", input.courseThumbnail);
+    }
+
+    await editCourse({ formData, courseId });
   };
 
-  useEffect(()=>{
-    if(isSuccess){
-        toast.success(data.message || "Course updated.")
+  useEffect(() => {
+    if (isSuccess) {
+      toast.success(data?.message || "Course updated.");
+      navigate("/admin/course");
     }
-    if(error){
-        toast.error(error.data.message || "Failed to updated course!")
+    if (error) {
+      const errorMessage =
+        error?.data?.message || "An unexpected error occurred.";
+      toast.error(errorMessage);
+      console.error("Edit Course Error:", error);
     }
-  },[])
+  }, [isSuccess, error, data, navigate]);
+
+  if (courseByIdLoading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <Loader2 className="mr-2 h-6 w-6 animate-spin" />
+        Loading course data...
+      </div>
+    );
+  }
 
   return (
     <Card className="p-5">
@@ -110,8 +146,13 @@ export default function CourseTab() {
           </CardDescription>
         </div>
         <div className="flex gap-4">
-          <Button variant="outline">
-            {isPublished ? "Unpublish" : "Publish"}
+          <Button
+            variant="outline"
+            onClick={() =>
+              setInput((prev) => ({ ...prev, isPublished: !prev.isPublished }))
+            }
+          >
+            {input.isPublished ? "Unpublish" : "Publish"}
           </Button>
           <Button>Remove Course</Button>
         </div>
@@ -124,8 +165,9 @@ export default function CourseTab() {
             type="text"
             name="courseTitle"
             value={input.courseTitle}
-            onChange={changeEventHandler}
-            placeholder="Ex. Fullstack developer"
+            onChange={handleChange}
+            placeholder="Ex. Fullstack Developer"
+            disabled={courseByIdLoading}
           />
         </div>
         <div>
@@ -134,40 +176,58 @@ export default function CourseTab() {
             type="text"
             name="subTitle"
             value={input.subTitle}
-            onChange={changeEventHandler}
-            placeholder="Ex. Become a fullstack developer in 6 months"
+            onChange={handleChange}
+            placeholder="Ex. Become a Fullstack Developer in 6 Months"
+            disabled={courseByIdLoading}
           />
         </div>
         <div>
           <Label>Description</Label>
-          <RichTextEditor input={input} setinput={setinput} />
+          <RichTextEditor
+            value={input.description}
+            onChange={(value) =>
+              setInput((prev) => ({ ...prev, description: value }))
+            }
+          />
         </div>
         <div className="flex items-center gap-5">
           <div>
             <Label>Category</Label>
-            <Select onValueChange={SelectedCategory}>
+            <Select onValueChange={handleCategoryChange}>
               <SelectTrigger className="w-[220px] mt-1">
-                <SelectValue placeholder="Select a category" />
+                <SelectValue>
+                  {input.category || "Select a category"}
+                </SelectValue>
               </SelectTrigger>
               <SelectContent className="bg-white">
-                <SelectItem value="nextjs">Nextjs</SelectItem>
+                <SelectItem value="nextjs">Next.js</SelectItem>
                 <SelectItem value="data">Data Science</SelectItem>
                 <SelectItem value="frontend">Frontend Development</SelectItem>
                 <SelectItem value="fullstack">Fullstack Development</SelectItem>
+                <SelectItem value="mern">MERN Stack Development</SelectItem>
+                <SelectItem value="javascript">Javascript</SelectItem>
+                <SelectItem value="python">Python</SelectItem>
+                <SelectItem value="docker">Docker</SelectItem>
+                <SelectItem value="mongodb">MongoDB</SelectItem>
+                <SelectItem value="html">HTML</SelectItem>
+                <SelectItem value="css">CSS</SelectItem>
+                <SelectItem value="boostrap">Boostrap</SelectItem>
               </SelectContent>
             </Select>
           </div>
 
           <div>
             <Label>Course Level</Label>
-            <Select onValueChange={seletectCourseLevel}>
+            <Select onValueChange={handleLevelChange}>
               <SelectTrigger className="w-[220px] mt-1">
-                <SelectValue placeholder="Select a Level" />
+                <SelectValue>
+                  {input.courseLevel || "Select a level"}
+                </SelectValue>
               </SelectTrigger>
               <SelectContent className="bg-white">
                 <SelectItem value="beginner">Beginner</SelectItem>
                 <SelectItem value="medium">Medium</SelectItem>
-                <SelectItem value="advance">Advance</SelectItem>
+                <SelectItem value="advance">Advanced</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -177,7 +237,7 @@ export default function CourseTab() {
               type="number"
               name="coursePrice"
               value={input.coursePrice}
-              onChange={changeEventHandler}
+              onChange={handleChange}
               placeholder="0.00"
               className="w-fit"
             />
@@ -188,7 +248,7 @@ export default function CourseTab() {
           <Label>Course Thumbnail</Label>
           <Input
             type="file"
-            onChange={selectThumbnail}
+            onChange={handleThumbnailChange}
             accept="image/*"
             className="w-fit"
           />
