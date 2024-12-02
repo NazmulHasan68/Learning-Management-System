@@ -7,7 +7,7 @@ const lectureSchema = new mongoose.Schema({
     },
     vidoeUrl : { type : String},
     publicId: {type :String},
-    isPreviwFree:{type : Boolean}
+    isPreviewFree:{type : Boolean}
 },{timestamps:true})
 
 export const Lecture = mongoose.model("Lecture", lectureSchema)
