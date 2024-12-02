@@ -37,6 +37,13 @@ export const courseApi = createApi({
         body: formData,
       }),
     }),
+
+    getCourseById : builder.query({
+      query:(courseId)=>({
+        url:`/course/${courseId}`,
+        method:"GET",
+      })
+    })
   }),
 });
 
@@ -45,4 +52,5 @@ export const {
   useCreateCourseMutation,
   useGetCreatorCourseQuery,
   useEditCourseMutation,
+  useGetCourseByIdQuery
 } = courseApi;
