@@ -10,15 +10,16 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Progress } from "@/components/ui/progress";
 import { Switch } from "@/components/ui/switch";
-import { useEditeLectureMutation } from "@/features/api/courseApi";
+import { useEditeLectureMutation, useRemoveLectureMutation } from "@/features/api/courseApi";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
 
 const MEDIA_API = "http://localhost:8000/api/v1/media";
 
 export default function LectureTab() {
+  const navigate = useNavigate()
   const [LectureTitle, setLectureTitle] = useState("");
   const [uploadVideoInfo, setUploadvideoInfo] = useState(null);
   const [isFree, setFree] = useState(false);
@@ -80,6 +81,24 @@ export default function LectureTab() {
     }
   }, [isSuccess, error]);
 
+  const [removeLecture, { data: removeData, isLoading: removeLoading, isSuccess: removeSuccess, error: removeError }] = useRemoveLectureMutation();
+
+  const RemoveLectureHandler = async () => {
+    try {
+      await removeLecture(lectureId).unwrap(); // Unwraps the promise to handle errors directly
+    } catch (err) {
+      console.error("Error removing lecture:", err);
+      toast.error(err?.data?.message || "Failed to remove lecture.");
+    }
+  };
+  
+  useEffect(() => {
+    if (removeSuccess) {
+      toast.success(removeData.message);
+      navigate(`/admin/course/${courseId}/lecture`)
+    }
+  }, [removeSuccess]);
+  
   return (
     <Card>
       <CardHeader className="flex flex-col justify-between">
@@ -90,8 +109,8 @@ export default function LectureTab() {
         <div className="flex items-center gap-2">
           <Button
             variant="destructive"
+            onClick={RemoveLectureHandler}
             className="bg-red-600 hover:bg-red-700 text-white rounded-xl"
-            onClick={() => toast.error("Remove Lecture functionality is not implemented yet!")}
           >
             Remove Lecture
           </Button>

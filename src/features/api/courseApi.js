@@ -4,7 +4,7 @@ const API_BASE_URL = "http://localhost:8000/api/v1";
 
 export const courseApi = createApi({
   reducerPath: "courseApi",
-  tagTypes: ["Refetch_creator_course"],
+  tagTypes: ["Refetch_creator_course", "Refech_Lecture"],
   baseQuery: fetchBaseQuery({
     baseUrl: API_BASE_URL,
     credentials: "include", // Sends cookies with requests
@@ -59,9 +59,9 @@ export const courseApi = createApi({
       query : (courseId)=>({
         url : `course/${courseId}/lecture`,
         method : 'GET',
-      })
+      }),
+      providesTags:['Refech_Lecture']
     }),
-    
 
     editeLecture : builder.mutation({
       query:({lectureTitle, videoInfo, isPreviewFree, courseId, lectureId})=>({
@@ -69,7 +69,16 @@ export const courseApi = createApi({
         method:"POST",
         body : {lectureTitle, videoInfo, isPreviewFree}
       })
-    })
+    }),
+
+    removeLecture : builder.mutation({
+      query:(lectureId)=>({
+        url:`/course/lecture/${lectureId}`,
+        method:"DELETE",
+      }),
+      invalidatesTags:['Refech_Lecture']
+    }),
+
   }),
 });
 
@@ -82,5 +91,5 @@ export const {
   useCreateLectureMutation,
   useGetCourseLectureQuery,
   useEditeLectureMutation,
-
+  useRemoveLectureMutation
 } = courseApi;
