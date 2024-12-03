@@ -28,6 +28,10 @@ export const createCourse = async (req, res) => {
   }
 };
 
+
+
+
+
 export const getCreatorCourses = async (req, res) => {
   try {
     const userId = req.id;
@@ -49,6 +53,30 @@ export const getCreatorCourses = async (req, res) => {
 
 
 
+export const getPublishedCourse = async(req, res)=>{
+  try {
+    const courses = await Course.find({ isPublished: true })
+    .populate({
+      path: "creator",
+      select: "name photourl",
+    })
+    if(!courses){
+      return res.status(404).json({
+        message : "Course not found"
+      })
+    }
+    return res.status(200).json({
+      courses
+    })
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json("Faild to get published courses");
+  }
+}
+
+
+
+
 export const editCourse = async (req, res) => {
   try {
     const courseId = req.params.courseId;
@@ -57,7 +85,7 @@ export const editCourse = async (req, res) => {
       subTitle,
       description,
       category,
-      courseLevelm,
+      courseLevel,
       coursePrice,
     } = req.body;
     const thumbnail = req.file;
@@ -83,7 +111,7 @@ export const editCourse = async (req, res) => {
       subTitle,
       description,
       category,
-      courseLevelm,
+      courseLevel,
       coursePrice,
       courseThumbnail:courseThumbnail?.secure_url
     };
@@ -159,6 +187,8 @@ export const createLecture = async (req, res) => {
 };
 
 
+
+
 export const getCourseLecture = async(req, res)=>{
   try {
     const {courseId} = req.params
@@ -180,6 +210,8 @@ export const getCourseLecture = async(req, res)=>{
     })
   }
 }
+
+
 
 
 
