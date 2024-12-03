@@ -13,6 +13,7 @@ import {
 import {
   useEditCourseMutation,
   useGetCourseByIdQuery,
+  usePublishCourseMutation,
 } from "@/features/api/courseApi";
 import { Loader2 } from "lucide-react";
 import React, { useEffect, useState } from "react";
@@ -27,8 +28,10 @@ export default function CourseTab() {
 
   const [editCourse, { data, isLoading, isSuccess, error }] =
     useEditCourseMutation();
-  const { data: courseByIdData, isLoading: courseByIdLoading } =
+  const { data: courseByIdData, isLoading: courseByIdLoading , refetch} =
     useGetCourseByIdQuery(courseId);
+
+    const [publishCourse] = usePublishCourseMutation()
 
   const [input, setInput] = useState({
     courseTitle: "",
@@ -136,6 +139,28 @@ export default function CourseTab() {
     );
   }
 
+
+  const publishstatusHandler = async(action)=>{
+    try {
+      const response = await publishCourse({courseId , query:action})
+      if(response.data){
+        refetch()
+        toast.success(response.data.message)
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error("Faild to publish or unpblished")
+    }
+  }
+
+
+
+
+
+
+
+
+
   return (
     <Card className="p-5">
       <div className="flex justify-between items-center">
@@ -148,11 +173,10 @@ export default function CourseTab() {
         <div className="flex gap-4">
           <Button
             variant="outline"
-            onClick={() =>
-              setInput((prev) => ({ ...prev, isPublished: !prev.isPublished }))
-            }
+            disabled={courseByIdData?.course.lectures.length == 0}
+            onClick={()=>publishstatusHandler(courseByIdData?.course.isPublished ? "false" : "true")}
           >
-            {input.isPublished ? "Unpublish" : "Publish"}
+            {courseByIdData?.course.isPublished ? "Unpublish" : "Publish"}
           </Button>
           <Button>Remove Course</Button>
         </div>

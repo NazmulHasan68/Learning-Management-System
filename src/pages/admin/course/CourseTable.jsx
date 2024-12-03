@@ -78,7 +78,7 @@ export default function CourseTable() {
             {data?.courses?.map((courese, index) => (
             <TableRow key={index} className="hover:bg-slate-100 cursor-pointer">
                 <TableCell className="font-medium">{courese?.coursePrice || "NA"}</TableCell>
-                <TableCell> <div>{courese?.isPublished ? "Publiched" : "Draft"}</div></TableCell>
+                <TableCell>{courese.isPublished ? <p className='bg-green-200 px-4 py-2 rounded-xl w-fit'>Publiched</p> : <p className='bg-red-200 px-4 py-2 rounded-xl w-fit'>Draft</p>} </TableCell>
                 <TableCell>{courese.courseTitle}</TableCell>
                 <TableCell className="text-right">
                     <Button onClick={()=>navigate(`/admin/course/${courese?._id}`)} className='bg-slate-700 hover:bg-slate-800 text-white'>
