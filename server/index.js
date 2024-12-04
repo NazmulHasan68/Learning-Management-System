@@ -1,33 +1,39 @@
-import express from 'express'
-import cors from 'cors'
-import dotenv from 'dotenv'
-import { connectDB } from './Database/dbConnect.js'
-import userRoute from './routes/user.Route.js'
-import courseRoute from './routes/course.Route.js'
-import mediaRoute from './routes/media.route.js'
-import cookieParser from 'cookie-parser'
-dotenv.config()
+import express from 'express';
+import cors from 'cors';
+import dotenv from 'dotenv';
+import { connectDB } from './Database/dbConnect.js';
+import userRoute from './routes/user.Route.js';
+import courseRoute from './routes/course.Route.js';
+import mediaRoute from './routes/media.route.js';
+import moneyRoute from './routes/sssl.commerz.Route.js';
+import cookieParser from 'cookie-parser';
 
-const app = express()
-const PORT = 8000 
+dotenv.config();
+const app = express();
+const PORT = 8000;
 
-//apis
-app.use(express.json())
-app.use(cookieParser())
+// Set up environment
+app.use(express.json());
+app.use(cookieParser());
+
+// CORS Configuration
 app.use(cors({
-    origin:'http://localhost:5173',
-    credentials:true
-}))
-app.use("/api/v1/user", userRoute)
-app.use("/api/v1/course",courseRoute)
-app.use("/api/v1/media", mediaRoute)
+    origin: 'http://localhost:5173', // Frontend URL
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+}));
+
+// API Routes
+app.use("/api/v1/user", userRoute);
+app.use("/api/v1/course", courseRoute);
+app.use("/api/v1/media", mediaRoute);
+app.use('/api/v1/money', moneyRoute);
 
 app.get('/home', (req, res) => {
-    res.status(200).json({ success: true, message: "Hello, I am coming from the backend" });
-  });
+    res.status(200).json({ success: true, message: "Hello from the backend!" });
+});
 
-
-app.listen(PORT , (req, res)=>{
-    console.log(`server is running ${PORT}`);
-    connectDB()
-})
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+    connectDB();
+});
