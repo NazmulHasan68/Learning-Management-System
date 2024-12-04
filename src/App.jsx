@@ -14,6 +14,7 @@ import AddCourse from './pages/admin/course/AddCourse'
 import EditCourse from './pages/admin/course/EditCourse'
 import CreateLecture from './pages/admin/lecture/CreateLecture'
 import EditLecture from './pages/admin/lecture/EditLecture'
+import CourseDetails from './pages/student/CourseDetails'
 
 
 const appRoutr = createBrowserRouter([
@@ -43,7 +44,10 @@ const appRoutr = createBrowserRouter([
         path:"/profile",
         element:<Profile/>
       },
-
+      {
+        path:"/course-details/:courseId",
+        element:<CourseDetails/>
+      },
       // admin route start form here
       {
         path : "/admin",
