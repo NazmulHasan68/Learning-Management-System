@@ -10,10 +10,9 @@ const PaymentButton = () => {
 
     const handlePayment = async () => {
         try {
-            // Send a POST request to your backend to initialize the payment
             const response = await axios.post(
-                'http://localhost:8000/api/v1/payment', // Use the correct backend route
-                {courseId}, // If you need to send data (e.g., courseId), pass it here as an object
+                'http://localhost:8000/api/v1/payment',
+                {courseId},
                 {
                     headers: {
                        'Content-Type': 'application/json',
@@ -34,6 +33,7 @@ const PaymentButton = () => {
             console.error('Error during payment request:', error.message);
         }
     };
+    
 
     return (
         <button
