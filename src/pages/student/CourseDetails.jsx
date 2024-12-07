@@ -42,7 +42,7 @@ export default function CourseDetails() {
             Nestjs you will master sarver-side roudering, static site
             generation, API routes , dynamic routing, and much more. BY the end
             for this course. you will be able to create SEO-friendly, scalable
-            and fast for web applications with case
+            and fast for web applications with case hello
           </p>
           <Card>
             <CardHeader>
