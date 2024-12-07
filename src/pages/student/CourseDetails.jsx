@@ -11,8 +11,11 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { BadgeInfo, Lock, PlayCircle } from "lucide-react";
 import React from "react";
+import { useParams } from "react-router-dom";
 
 export default function CourseDetails() {
+  const params = useParams()
+  const courseId = params.courseId;
   const parchasedCourse = false;
   return (
     <div className="mt-20">
@@ -79,7 +82,7 @@ export default function CourseDetails() {
                   Continus course
                 </Button>
               ) : (
-              <BuyCourseButton />
+              <BuyCourseButton courseId={courseId} />
               )}
             </CardFooter>
           </Card>

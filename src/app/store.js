@@ -12,7 +12,7 @@ export const appStore = configureStore({
     [purchaseApi.reducerPath] : purchaseApi.reducer
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(authApi.middleware, courseApi.middleware), // Include middlewares for both APIs
+    getDefaultMiddleware().concat(authApi.middleware, courseApi.middleware, purchaseApi.middleware), // Include middlewares for both APIs
 });
 
 const initializeApp = async () => {
