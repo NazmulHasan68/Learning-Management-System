@@ -158,6 +158,8 @@ export default function CourseTab() {
 
 
 
+  console.log(courseByIdData?.course.isPublished);
+  
 
 
 
@@ -250,8 +252,8 @@ export default function CourseTab() {
               </SelectTrigger>
               <SelectContent className="bg-white">
                 <SelectItem value="beginner">Beginner</SelectItem>
-                <SelectItem value="medium">Medium</SelectItem>
-                <SelectItem value="advance">Advanced</SelectItem>
+                <SelectItem value="intermediate">Medium</SelectItem>
+                <SelectItem value="advanced">Advanced</SelectItem>
               </SelectContent>
             </Select>
           </div>
