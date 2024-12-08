@@ -8,7 +8,7 @@ export const getCourseProgress = async(req, res)=>{
 
         //step-1 fetch the user course progress
         let courseProgress = await CourseProgress.findOne({courseId, userId}).populate("courseId")
-        const courseDetails = await Course.findById(courseId)
+        const courseDetails = await Course.findById(courseId).populate("lectures")
         if(!courseDetails) return res.status(404).json({success:false, message : "Course not found!"})
 
         //step-2 if no progress found, return course details with an empty progress 
@@ -115,7 +115,7 @@ export const markAsInCompleted = async(req, res)=>{
 
         await courseProgress.save()
 
-        return res.status(200).json({message : "Course marked as INcompleted. "})
+        return res.status(200).json({message : "Course marked as Incompleted. "})
     } catch (error) {
         console.log(error);
     }
