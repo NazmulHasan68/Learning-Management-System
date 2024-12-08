@@ -26,7 +26,7 @@ export default function CourseDetails() {
   if(isError) return <h1>Faild to load course details </h1>
 
   const {course , purchased} = data
-  console.log(course);
+  console.log(purchased);
 
 
   const handleContinueCOurse = ()=>{
