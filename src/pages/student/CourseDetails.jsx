@@ -12,9 +12,11 @@ import { Separator } from "@/components/ui/separator";
 import { useGetCourseDetailsWithStatusQuery } from "@/features/api/purchaseApi";
 import { BadgeInfo, Lock, PlayCircle } from "lucide-react";
 import React from "react";
-import { useParams } from "react-router-dom";
+import ReactPlayer from "react-player";
+import { useNavigate, useParams } from "react-router-dom";
 
 export default function CourseDetails() {
+  const navigate = useNavigate()
   const params = useParams()
   const courseId = params.courseId;
 
@@ -24,7 +26,14 @@ export default function CourseDetails() {
   if(isError) return <h1>Faild to load course details </h1>
 
   const {course , purchased} = data
-console.log(purchased);
+  console.log(course);
+
+
+  const handleContinueCOurse = ()=>{
+    if(purchased){
+      navigate(`/course-progress/${courseId}`)
+    }
+  }
 
   return (
     <div className="mt-20">
@@ -71,16 +80,18 @@ console.log(purchased);
         <div className="w-full lg:w-1/3">
           <Card>
             <CardContent className="flex flex-col p-4">
-              <div className="w-full aspect-video mb-4">Video</div>
+              <div className="w-full aspect-video mb-4">
+                <ReactPlayer width='100%' height="100%" url={course.lectures[0].vidoeUrl} controls={true}/>
+              </div>
               <h1>Lecture titile</h1>
               <Separator className="border-b-2 py-2" />
               <h1 className="text-lg md:text-xl font-semibold">
-                Course Price : <span>100$</span>
+                Course Price : <span>{course?.coursePrice || "00"}</span>
               </h1>
             </CardContent>
             <CardFooter className="flex justify-center p-4">
               {purchased ? (
-                <Button className="bg-slate-800 w-full hover:bg-slate-900 text-white rounded-xl">
+                <Button onClick={handleContinueCOurse} className="bg-slate-800 w-full hover:bg-slate-900 text-white rounded-xl">
                   Continus course
                 </Button>
               ) : (
