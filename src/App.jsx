@@ -17,6 +17,7 @@ import EditLecture from './pages/admin/lecture/EditLecture'
 import CourseDetails from './pages/student/CourseDetails'
 import CourseProgress from './pages/student/CourseProgress'
 import SearchPage from './pages/student/SearchPage'
+import ProtectedRoutes, { AdminRoute, AuthenticatedUser } from './components/ProtectedRoutes'
 
 
 const appRoutr = createBrowserRouter([
@@ -36,32 +37,32 @@ const appRoutr = createBrowserRouter([
       },
       {
         path:"/login",
-        element:<Login/>
+        element:<AuthenticatedUser><Login/></AuthenticatedUser>
       },
       {
         path:"/my-learning",
-        element:<Mylearning/>
+        element:<ProtectedRoutes><Mylearning/></ProtectedRoutes>
       },
       {
         path:"/profile",
-        element:<Profile/>
+        element:<ProtectedRoutes><Profile/></ProtectedRoutes>
       },
       {
         path:"/course/search",
-        element:<SearchPage/>
+        element:<ProtectedRoutes><SearchPage/></ProtectedRoutes>
       },
       {
         path:"/course-details/:courseId",
-        element:<CourseDetails/>
+        element:<ProtectedRoutes><CourseDetails/></ProtectedRoutes>
       },
       {
         path:"/course-progress/:courseId",
-        element:<CourseProgress/>
+        element:<ProtectedRoutes><CourseProgress/></ProtectedRoutes>
       },
       // admin route start form here
       {
         path : "/admin",
-        element : <Sidebar/>,
+        element :<AdminRoute><Sidebar/></AdminRoute> ,
         children:[
           {
             path : "dashboard",
