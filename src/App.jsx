@@ -18,6 +18,7 @@ import CourseDetails from './pages/student/CourseDetails'
 import CourseProgress from './pages/student/CourseProgress'
 import SearchPage from './pages/student/SearchPage'
 import ProtectedRoutes, { AdminRoute, AuthenticatedUser } from './components/ProtectedRoutes'
+import PurchaseCourseProtectedRoute from './components/PurchaseCourseProjectedRoute'
 
 
 const appRoutr = createBrowserRouter([
@@ -57,7 +58,11 @@ const appRoutr = createBrowserRouter([
       },
       {
         path:"/course-progress/:courseId",
-        element:<ProtectedRoutes><CourseProgress/></ProtectedRoutes>
+        element:<ProtectedRoutes>
+              <PurchaseCourseProtectedRoute>
+                <CourseProgress/>
+              </PurchaseCourseProtectedRoute>
+            </ProtectedRoutes>
       },
       // admin route start form here
       {
