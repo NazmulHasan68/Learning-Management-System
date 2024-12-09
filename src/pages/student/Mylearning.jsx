@@ -1,9 +1,10 @@
 import React from 'react'
 import Course from './Course'
+import { useLoadUserQuery } from '@/features/api/authApi'
 
 export default function Mylearning() {
-    const isloading = false
-    const myLearningCourses =[]
+    const {data, isloading} = useLoadUserQuery()
+    const myLearningCourses = data?.user.enrolledCourses || []
   return (
     <div className='max-w-4xl mx-auto my-24 px-4 md:px-0'>
       <h1 className='font-bold text-2xl'>My learning</h1>
@@ -16,7 +17,7 @@ export default function Mylearning() {
             :(
                 <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6'>
                     {
-                      [].map((course, index)=><Course key={index} course={course}/>)
+                      myLearningCourses.map((course, index)=><Course key={index} course={course}/>)
                     }
                 </div> 
             )

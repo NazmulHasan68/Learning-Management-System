@@ -77,7 +77,8 @@ export default function Profile() {
   if (isLoading) return <h1>Profile loading...</h1>;
 
   const user = data && data.user;
-  const enrolledCourses = [1, 2]; // Temporary list of enrolled courses (remove if unnecessary)
+  // const enrolledCourses = [1, 2];
+   // Temporary list of enrolled courses (remove if unnecessary)
 
   return (
     <div className="max-w-4xl mx-auto px-4 my-24">
