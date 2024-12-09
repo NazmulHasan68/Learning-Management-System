@@ -50,9 +50,9 @@ export default function Filter({ handleFilterChange }) {
     <div className="w-full md:w-[20%] p-4 bg-gray-50 dark:bg-gray-800 rounded-lg shadow">
       <div className="flex flex-col">
         <h1 className="font-semibold text-lg md:text-xl mb-4">Filter Options</h1>
-        <Select onValueChange={handleSortByPriceChange} className="bg-white">
+        <Select onValueChange={handleSortByPriceChange}>
           <SelectTrigger className="w-full">
-            <SelectValue placeholder="Sort by" />
+            <SelectValue placeholder="Sort by price" />
           </SelectTrigger>
           <SelectContent className="bg-white">
             <SelectGroup>
@@ -75,8 +75,10 @@ export default function Filter({ handleFilterChange }) {
               onCheckedChange={(isChecked) =>
                 handleCategoryChange(category.id, isChecked)
               }
+              aria-labelledby={`${category.id}-label`}
             />
             <Label
+              id={`${category.id}-label`}
               htmlFor={category.id}
               className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
             >
