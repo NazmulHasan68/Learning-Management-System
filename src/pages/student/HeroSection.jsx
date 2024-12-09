@@ -46,7 +46,7 @@ export default function HeroSection() {
           </Button>
         </form>
 
-        <Button className="bg-white text-sm md:text-md dark:bg-gray-800 text-blue-500 rounded-full hover:bg-gray-200 px-6 py-3">
+        <Button onClick={()=>navigate(`/course/search?query=`)} className="bg-white text-sm md:text-md dark:bg-gray-800 text-blue-500 rounded-full hover:bg-gray-200 px-6 py-3">
           Explore Courses
         </Button>
       </div>

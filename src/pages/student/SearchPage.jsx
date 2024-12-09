@@ -30,14 +30,14 @@ export default function SearchPage() {
             <span className='text-blue-600 italic font-semibold'>{query}</span>
         </p>
       </div>
-      <div className='flex flex-col md:flex-row gap-10'>
-        <Filter handleFilterChage={handleFilterChage}/>
-        <div className='flex-1'>
+      <div className='flex flex-col md:flex-row gap-10 -mt-20'>
+        <Filter handleFilterChange={handleFilterChage}/>
+        <div className='flex-1 h-[460px]  overflow-y-auto'>
             {
                 isLoading ? (Array.from(3).map((_, index)=>(
                     <CourseSkeleton key={index}/>
                 ))) : isEmpty? (<CourseNotFound/>): 
-                [1, 2, 3].map((course, index)=>(
+                data?.course?.map((course, index)=>(
                     <SearchResult course={course} key={index}/>
                 ))
             }
