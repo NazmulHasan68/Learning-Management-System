@@ -21,6 +21,30 @@ export const courseApi = createApi({
       invalidatesTags: ["Refetch_creator_course"],
     }),
 
+
+    getseachCourse : builder.query({
+      query : ({searchQuery, categories, sortByPrice})=>{
+        //build quire string
+        let queryString = `/course/search?query=${encodeURIComponent(searchQuery)}`
+
+        // append category
+        if(categories && categories.length > 0){
+          const categoriesString = categories.map(encodeURIComponent).json(",");
+          queryString += `&categories=${encodeURIComponent(categoriesString)}`
+        }
+
+        // append sortByPrice if available
+        if(sortByPrice){
+          queryString += `&sortByPrice=${encodeURIComponent(sortByPrice)}`
+        }
+
+        return {
+          url : queryString,
+          method : "GET",
+        }
+      }
+    }),
+
     // Query for fetching all courses created by the user
     getCreatorCourse: builder.query({
       query: () => ({
@@ -105,6 +129,7 @@ export const courseApi = createApi({
 // Export hooks for use in components
 export const {
   useCreateCourseMutation,
+  useGetseachCourseQuery,
   useGetCreatorCourseQuery,
   useGetPublichedCourseQuery,
   useEditCourseMutation,
