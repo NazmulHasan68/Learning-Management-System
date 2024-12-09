@@ -12,11 +12,13 @@ import {
   getLectureById,
   getPublishedCourse,
   removeLecture,
+  searchCorse,
   togglePublishCourse,
 } from "../controllers/course.Controller.js";
 
 const router = express.Router();
 router.route("/").post(isAuthenticated, createCourse);
+router.route("/search").get(isAuthenticated, searchCorse);
 router.route("/").get(isAuthenticated, getCreatorCourses);
 router.route('/published-courses').get(isAuthenticated, getPublishedCourse)
 router.route("/:courseId").put(isAuthenticated, upload.single("courseThumbnail"), editCourse);
