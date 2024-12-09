@@ -35,14 +35,14 @@ export const createCourse = async (req, res) => {
 
 export const searchCorse = async (req, res) => {
   try {
-    const { searchQuery = "", categories = [], sortByPrice = "" } = req.query;
+    const { query = "", categories = [], sortByPrice = "" } = req.query;
     // create search Query
     const searchCriteria = {
       isPublished: true,
       $or: [
-        { courseTitle: { $regex: searchQuery, $options: "i" } },
-        { subTitle: { $regex: searchQuery, $options: "i" } },
-        { category: { $regex: searchQuery, $options: "i" } },
+        { courseTitle: { $regex: query, $options: "i" } },
+        { subTitle: { $regex: query, $options: "i" } },
+        { category: { $regex: query, $options: "i" } },
       ],
     };
 
