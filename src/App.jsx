@@ -19,6 +19,7 @@ import CourseProgress from './pages/student/CourseProgress'
 import SearchPage from './pages/student/SearchPage'
 import ProtectedRoutes, { AdminRoute, AuthenticatedUser } from './components/ProtectedRoutes'
 import PurchaseCourseProtectedRoute from './components/PurchaseCourseProjectedRoute'
+import { ThemeProvider } from './components/TheamProvider'
 
 
 const appRoutr = createBrowserRouter([
@@ -102,9 +103,9 @@ const appRoutr = createBrowserRouter([
 function App() {
   return (
     <main>
-      <RouterProvider router={appRoutr}>
-
-      </RouterProvider>
+      <ThemeProvider>
+        <RouterProvider router={appRoutr}/>
+      </ThemeProvider>
     </main>
   )
 }

@@ -29,12 +29,12 @@ export default function Navbar() {
     }
  
   return (
-    <div className='h-16 dark:bg-[#0A0A0A] bg-white border-b dark:border-b-gray-800 border-b-gray-200 fixed top-0 right-0 left-0 duration-300 z-10'>
+    <div className='h-16 dark:bg-[#1c5a5e] bg-white border-b dark:border-b-gray-800 border-b-gray-200 fixed top-0 right-0 left-0 duration-300 z-10'>
       {/* Desktop */}
       <div className=' mx-auto max-w-7xl hidden md:flex justify-between items-center gap-10 h-full'>
-        <div className='flex items-center gap-2'>
+        <div className='flex items-center gap-2 dark:text-slate-50'>
             <School size={"30"}/>
-            <h1 className='hidden md:block font-extrabold text-2xl'><Link to={'/'}>E-Learning</Link></h1>
+            <h1 className='hidden md:block font-extrabold text-2xl '><Link to={'/'}>E-Learning</Link></h1>
         </div>
          {/* user icons and dark mode icons */}
         <div className='flex items-center gap-5'>
@@ -77,7 +77,7 @@ export default function Navbar() {
       </div>
 
       <div className='flex md:hidden items-center justify-between px-4 h-full'>
-        <h1 className='font-bold text-2xl'>E-Learning</h1>
+        <h1 className='font-bold text-2xl dark:text-slate-50 cursor-pointer'><Link to='/'>E-Learning </Link></h1>
         <MobileNavbar/>
       </div>
     </div>
@@ -88,7 +88,22 @@ export default function Navbar() {
 
 
 const MobileNavbar = () =>{
-    const role = 'instructor'
+    const [logoutUser , { isSuccess}] = useLogoutUserMutation()
+    const navigate = useNavigate()
+
+    useEffect(()=>{
+        if(isSuccess){
+            toast.success(data.message || "User logout")
+            navigate('/login')
+        }
+    },[isSuccess])
+
+    const { data, isLoading, refetch } = useLoadUserQuery();
+    const user = data && data.user;
+
+    const logoutHandler = async() =>{
+        await logoutUser()
+    }
     return (
         <Sheet>
             <SheetTrigger asChild>
@@ -102,15 +117,19 @@ const MobileNavbar = () =>{
                     <DarkMode/>
                 </SheetHeader>
                 <nav className='flex flex-col space-y-4'>
-                    <span>My Learning</span>
-                    <span>Edit Learning</span>
-                    <p>Lot out</p>
+                    <span><Link to='/my-learning'>My Learning</Link></span>
+                    <span><Link to='/profile'>Edit Learning</Link></span>
+                    <p onClick={logoutHandler}>Logout</p>
                 </nav>
                 {
-                    role === 'instructor' && (
+                   user.role === 'instructor' && (
                         <SheetFooter >
                             <SheetClose asChild>
-                                <Button className='bg-slate-700 text-white hover:bg-slate-600' type='submit'>Dashboard</Button>
+                                <Button className='bg-slate-700 text-white hover:bg-slate-600' type='submit'>
+                                    <Link to='/admin/dashboard'>
+                                         Dashboard
+                                    </Link>
+                                </Button>
                             </SheetClose>
                         </SheetFooter>
                     )
